@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <!-- prints Logback internal status messages to the console -->
+  <statusListener class="ch.qos.logback.core.status.OnConsoleStatusListener"/>
+
+  <!-- Inherit Spring Boot’s default Logback settings -->
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+  <!-- Log file name property -->
+   <!--  <property name="LOG_FILE" value="parking-fee-service.log"/>  -->
+  <property name="LOG_FILE" value="${LOG_DIR:-./logs}/parking-fee-service.log"/>
+
+  <!-- Plain Console Appender -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>
+        %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%X{requestId}] - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <!-- Rolling File Appender -->
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_FILE}</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <!-- daily rollover -->
+      <fileNamePattern>${LOG_FILE}.%d{yyyy-MM-dd}.gz</fileNamePattern>
+      <maxHistory>30</maxHistory>
+    </rollingPolicy>
+    <encoder>
+      <pattern>
+        %d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} [%X{requestId}] - %msg%n
+      </pattern>
+    </encoder>
+  </appender>
+
+  <!-- Async Appender wrapping both CONSOLE and FILE -->
+  <appender name="ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="FILE"/>
+    <queueSize>5000</queueSize>
+    <!-- 0 = never discard -->
+    <discardingThreshold>0</discardingThreshold>
+    <includeCallerData>false</includeCallerData>
+  </appender>
+
+  <!-- Root logger uses the ASYNC appender -->
+  <root level="INFO">
+    <appender-ref ref="ASYNC"/>
+  </root>
+
+</configuration>

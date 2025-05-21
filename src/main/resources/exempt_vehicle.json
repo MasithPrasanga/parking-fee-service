@@ -1,0 +1,5 @@
+[
+  { "vehicleType": "Emergency", "priorityCode": 0 },
+  { "vehicleType": "Foreign",   "priorityCode": 1 },
+  { "vehicleType": "Government","priorityCode": 2 }
+]

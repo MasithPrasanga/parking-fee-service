@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: parking-fee-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/parking
+
+server:
+  servlet:
+    context-path: /parking-fee-service
+
+logging:
+  config: classpath:logback-spring.xml
+  file:
+    name: ./logs/parking-fee-service.log
+  level:
+    root: INFO
+    com.parkingfee: DEBUG
+
+google:
+  calendar:
+    apiKey: add_key_here
+    calendarId: add_calendar_id_here
